@@ -14,10 +14,16 @@
 #define JOIN_ON_START
 
 namespace prp {
+	struct vec2i { int x, y; };
+
 	class Renderer {
 #pragma region PROPERTIES
-	public:
-
+	private:
+		std::string title = "PointRenderPixel";
+		vec2i initialScreenPosition{ 33, 33 };
+		// WARNING, window is measured in points, not in plain pixels'
+		vec2i windowSize = { 256, 256 };
+		int pointSize = 1;
 
 #pragma endregion
 
@@ -60,7 +66,10 @@ namespace prp {
 
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-			instance.glfw_window = glfwCreateWindow(640, 480, "PointRenderPixel", NULL, NULL);
+			instance.glfw_window = glfwCreateWindow(instance.windowSize.x * instance.pointSize, instance.windowSize.y * instance.pointSize, instance.title.c_str(), NULL, NULL);
+
+			if (!instance.glfw_window)
+				throw std::exception("Invalid window, created");
 
 			std::unique_lock<std::mutex> lock(instance.mtx);
 			// Wait for Renderer::isRunning to be true
@@ -85,6 +94,14 @@ namespace prp {
 #pragma endregion
 
 #pragma region METHODS
+		void Construct(const char* title, vec2i position, vec2i size, int pointSize) {
+			this->title = title;
+			this->windowSize = size;
+			this->initialScreenPosition = position;
+			this->pointSize = pointSize;
+		}
+
+
 		void Start() {
 			isRunning = true;
 			lock.notify_all();
@@ -92,6 +109,35 @@ namespace prp {
 #ifdef JOIN_ON_START
 			theThread.join();
 #endif
+		}
+
+#pragma endregion
+
+#pragma region WINDOWING 
+		inline void SetWindowSize(vec2i size) {
+			windowSize = size;
+			glfwSetWindowSize(glfw_window, size.x * pointSize, size.y * pointSize);
+		}
+
+		inline void GetWindowSize(vec2i& out) {
+			glfwGetWindowSize(glfw_window, &out.x, &out.y);
+		}
+
+		inline void SetWindowPosition(vec2i pos) {
+			glfwSetWindowPos(glfw_window, pos.x, pos.y);
+		}
+		
+		inline void GetWindowPosition(vec2i& out) {
+			glfwGetWindowPos(glfw_window, &out.x, &out.y);
+		}
+
+		inline void SetWindowTitle(const char* str) {
+			title = str;
+			glfwSetWindowTitle(glfw_window, title.c_str());
+		}
+
+		inline void GetWindowTitle(const char* out) {
+			out = title.c_str();
 		}
 
 #pragma endregion
