@@ -7,6 +7,9 @@
 #pragma comment(lib, "opengl32.lib")
 #include <GLFW/glfw3.h>
 
+// look at Renderer::Start
+#define JOIN_ON_START
+
 namespace prp {
 	class Renderer {
 #pragma region PROPERTIES
@@ -66,6 +69,10 @@ namespace prp {
 		void Start() {
 			isRunning = true;
 			lock.notify_all();
+			// Make main thread to wait for this thread to join
+#ifdef JOIN_ON_START
+			theThread.join();
+#endif
 		}
 
 #pragma endregion
