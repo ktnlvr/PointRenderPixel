@@ -24,6 +24,7 @@ namespace prp {
 		// WARNING, window is measured in points, not in plain pixels'
 		vec2i windowSize = { 256, 256 };
 		int pointSize = 1;
+		double deltaTime = 0;
 
 #pragma endregion
 
@@ -80,7 +81,16 @@ namespace prp {
 			
 			GLFWwindow*& window = instance.glfw_window;
 			glfwMakeContextCurrent(window);
+
+			// Used for measuring deltaTime
+			double lastFrameTime = 0;
 			while (!glfwWindowShouldClose(window)) {
+
+				// Calculate deltaTime
+				double currentFrame = glfwGetTime();
+				instance.deltaTime = currentFrame - lastFrameTime;
+				lastFrameTime = currentFrame;
+
 				glfwSwapBuffers(window);
 				glfwPollEvents();
 			}
