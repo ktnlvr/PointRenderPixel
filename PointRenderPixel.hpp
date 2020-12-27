@@ -84,7 +84,7 @@ namespace prp {
 		std::thread theThread;
 #pragma endregion
 
-#pragma METHODS
+#pragma region METHODS
 		void Start() {
 			isRunning = true;
 			lock.notify_all();
