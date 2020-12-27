@@ -1,5 +1,8 @@
 #pragma once
 
+#define PRIME_RENDERER [](){ return glfwInit(); }
+#define TERMINATE_RENDERER []() { return glfwTerminate(); }
+
 #include <mutex>
 #include <thread>
 
@@ -14,7 +17,7 @@ namespace prp {
 	class Renderer {
 #pragma region PROPERTIES
 	public:
-		
+
 
 #pragma endregion
 
@@ -35,7 +38,7 @@ namespace prp {
 #pragma region RULE OF FIVE
 	public:
 		~Renderer() = default;
-		
+
 		Renderer(Renderer&&) = delete;
 		Renderer(const Renderer&) = delete;
 
@@ -52,9 +55,9 @@ namespace prp {
 			// Wait for Renderer::isRunning to be true
 			instance.lock.wait(lock, []() { return Renderer::GetInstance().isRunning.load(); });
 			// Free all the locks
-			lock.unlock(); 
-			instance.lock.notify_all();	
-			
+			lock.unlock();
+			instance.lock.notify_all();
+
 			// Actual renderer code
 			printf("foo");
 		}
