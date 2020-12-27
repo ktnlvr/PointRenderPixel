@@ -1,22 +1,25 @@
 #pragma once
 
-#include <memory>
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "opengl32.lib")
 #include <GLFW/glfw3.h>
 
 namespace prp {
-	class Renderer : std::enable_shared_from_this<Renderer> {
+	class Renderer {
+#pragma region PROPERTIES
+	public:
+		std::string title;
+
+#pragma endregion
+
 #pragma region SINGLETON
 	public:
-		static std::shared_ptr<Renderer> GetInstance() noexcept {
-			if (instance.get() == nullptr) return std::shared_ptr<Renderer>(new Renderer());
-			else return instance;
+		static Renderer& GetInstance() {
+			static Renderer instance;
+			return instance;
 		}
 
 	protected:
-		inline static std::shared_ptr<Renderer> instance;
-
 		Renderer() {}
 
 #pragma endregion
@@ -33,8 +36,6 @@ namespace prp {
 
 #pragma endregion
 	};
-
-	typedef std::shared_ptr<Renderer> SharedRenderer;
-
-	inline auto GetRendererInstance() noexcept -> SharedRenderer { return Renderer::GetInstance(); }
+	typedef Renderer& RendererReference;
+	inline auto GetRendererInstance() noexcept -> Renderer& { return Renderer::GetInstance(); }
 }
