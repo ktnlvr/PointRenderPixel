@@ -21,6 +21,12 @@ namespace prp {
 
 #pragma endregion
 
+#pragma region GLFW PROPERTIES
+	public:
+		GLFWwindow* glfw_window = nullptr;
+
+#pragma endregion
+
 #pragma region SINGLETON
 	public:
 		static Renderer& GetInstance() {
@@ -51,15 +57,25 @@ namespace prp {
 	public:
 		static void TheThread() {
 			auto& instance = Renderer::GetInstance();
+
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+			instance.glfw_window = glfwCreateWindow(640, 480, "PointRenderPixel", NULL, NULL);
+
 			std::unique_lock<std::mutex> lock(instance.mtx);
 			// Wait for Renderer::isRunning to be true
 			instance.lock.wait(lock, []() { return Renderer::GetInstance().isRunning.load(); });
 			// Free all the locks
 			lock.unlock();
 			instance.lock.notify_all();
-
-			// Actual renderer code
-			printf("foo");
+			
+			GLFWwindow*& window = instance.glfw_window;
+			glfwMakeContextCurrent(window);
+			while (!glfwWindowShouldClose(window)) {
+				glfwSwapBuffers(window);
+				glfwPollEvents();
+			}
+			glfwDestroyWindow(window);
 		}
 
 		std::mutex mtx;
