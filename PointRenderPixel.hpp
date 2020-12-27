@@ -136,8 +136,8 @@ namespace prp {
 			glfwSetWindowTitle(glfw_window, title.c_str());
 		}
 
-		inline void GetWindowTitle(const char* out) {
-			out = title.c_str();
+		inline void GetWindowTitle(std::string& out) {
+			out = title;
 		}
 
 #pragma endregion
