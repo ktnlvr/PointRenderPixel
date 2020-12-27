@@ -1,6 +1,9 @@
 #pragma once
 
 #include <memory>
+#pragma comment(lib, "glfw3.lib")
+#pragma comment(lib, "opengl32.lib")
+#include <GLFW/glfw3.h>
 
 namespace prp {
 	class Renderer : std::enable_shared_from_this<Renderer> {
