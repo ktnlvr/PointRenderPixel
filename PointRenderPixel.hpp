@@ -100,12 +100,11 @@ namespace prp {
 				instance.deltaTime = currentFrame - lastFrameTime;
 				lastFrameTime = currentFrame;
 
-				instance.OnTickCallback(instance);
 
 				// Yes, all drawing is done as pixels
 				// Yes, it is fine
 				glBegin(GL_POINTS);
-				instance.OnRenderCallback(instance);
+				instance.OnTickCallback(instance);
 				glEnd();
 
 				// do GLFW stuff, read more on their docs
@@ -150,8 +149,6 @@ namespace prp {
 		void(*OnTickCallback)(Renderer& self) = [](Renderer& self) {};
 		// After all other Ticks have fired
 		void(*OnTickLateCallback)(Renderer& self) = [](Renderer& self) {};
-		// All your drawing code goes here
-		void(*OnRenderCallback)(Renderer& self) = [](Renderer& self) {};
 		// Runs when the engine just starts
 		void(*OnBeginCallback)(Renderer& self) = [](Renderer& self) {};
 		// Called when the main loop is done, but before window destruction
