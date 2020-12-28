@@ -82,7 +82,7 @@ namespace prp {
 			GLFWwindow*& window = instance.glfw_window;
 			glfwMakeContextCurrent(window);
 
-			instance.OnBeginCallback();
+			instance.OnBeginCallback(instance);
 
 			// Used for measuring deltaTime
 			double lastFrameTime = 0;
@@ -93,18 +93,18 @@ namespace prp {
 				instance.deltaTime = currentFrame - lastFrameTime;
 				lastFrameTime = currentFrame;
 
-				instance.OnTickCallback();
+				instance.OnTickCallback(instance);
 				glBegin(GL_POINTS);
-				instance.OnRenderCallback();
+				instance.OnRenderCallback(instance);
 				glEnd();
 				// do GLFW stuff
 				glfwSwapBuffers(window);
 				glfwPollEvents();
 
-				instance.OnTickLateCallback();
+				instance.OnTickLateCallback(instance);
 			}
 			glfwDestroyWindow(window);
-			instance.OnFinishCallback();
+			instance.OnFinishCallback(instance);
 		}
 
 		std::mutex mtx;
@@ -135,11 +135,11 @@ namespace prp {
 
 #pragma region CALLBACKS
 	public:
-		void(*OnTickCallback)(void) = []() {};
-		void(*OnTickLateCallback)(void) = []() {};
-		void(*OnRenderCallback)(void) = []() {};
-		void(*OnBeginCallback)(void) = []() {};
-		void(*OnFinishCallback)(void) = []() {};
+		void(*OnTickCallback)(Renderer& self) = [](Renderer& self) {};
+		void(*OnTickLateCallback)(Renderer& self) = [](Renderer& self) {};
+		void(*OnRenderCallback)(Renderer& self) = [](Renderer& self) {};
+		void(*OnBeginCallback)(Renderer& self) = [](Renderer& self) {};
+		void(*OnFinishCallback)(Renderer& self) = [](Renderer& self) {};
 
 #pragma endregion
 
