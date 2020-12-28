@@ -123,6 +123,16 @@ namespace prp {
 
 #pragma endregion
 
+#pragma region CALLBACKS
+	public:
+		void(*OnTickCallback)(void) = []() {};
+		void(*OnTickLateCallback)(void) = []() {};
+		void(*OnRenderCallback)(void) = []() {};
+		void(*OnBeginCallback)(void) = []() {};
+		void(*OnFinishCallback)(void) = []() {};
+
+#pragma endregion
+
 #pragma region WINDOWING 
 		inline void SetWindowSize(vec2i size) {
 			windowSize = size;
