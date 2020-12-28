@@ -10,8 +10,6 @@
 #pragma comment(lib, "opengl32.lib")
 #include <GLFW/glfw3.h>
 
-// look at Renderer::Start
-#define JOIN_ON_START
 #ifndef POINT_SIZE
 #define POINT_SIZE 4
 #endif
