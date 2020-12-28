@@ -82,19 +82,26 @@ namespace prp {
 			GLFWwindow*& window = instance.glfw_window;
 			glfwMakeContextCurrent(window);
 
+			instance.OnBeginCallback();
+
 			// Used for measuring deltaTime
 			double lastFrameTime = 0;
 			while (!glfwWindowShouldClose(window)) {
-
 				// Calculate deltaTime
 				double currentFrame = glfwGetTime();
 				instance.deltaTime = currentFrame - lastFrameTime;
 				lastFrameTime = currentFrame;
 
+				instance.OnTickCallback();
+				instance.OnRenderCallback();
+				// do GLFW stuff
 				glfwSwapBuffers(window);
 				glfwPollEvents();
+
+				instance.OnTickLateCallback();
 			}
 			glfwDestroyWindow(window);
+			instance.OnFinishCallback();
 		}
 
 		std::mutex mtx;
