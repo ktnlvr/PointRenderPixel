@@ -15,6 +15,7 @@
 
 namespace prp {
 	struct vec2i { int x, y; };
+	struct vec2f { float x, y; };
 
 	class Renderer {
 #pragma region PROPERTIES
@@ -185,6 +186,15 @@ namespace prp {
 		inline void GetWindowTitle(std::string& out) const {
 			out = title;
 		}
+
+#pragma endregion
+
+#pragma region DRAWING
+public:
+	// Based on OpenGL coordinates: (-1, 1)
+	void DrawPoint(vec2f windowPos) {
+		glVertex3f(windowPos.x, windowPos.y, 0);
+	}
 
 #pragma endregion
 	};
