@@ -113,8 +113,8 @@ namespace prp {
 
 				instance.OnTickLateCallback(instance);
 			}
-			glfwDestroyWindow(window);
 			instance.OnFinishCallback(instance);
+			glfwDestroyWindow(window);
 		}
 
 		std::mutex mtx;
@@ -154,7 +154,7 @@ namespace prp {
 		void(*OnRenderCallback)(Renderer& self) = [](Renderer& self) {};
 		// Runs when the engine just starts
 		void(*OnBeginCallback)(Renderer& self) = [](Renderer& self) {};
-		// 
+		// Called when the main loop is done, but before window destruction
 		void(*OnFinishCallback)(Renderer& self) = [](Renderer& self) {};
 
 #pragma endregion
