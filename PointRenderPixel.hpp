@@ -165,7 +165,7 @@ namespace prp {
 			glfwSetWindowSize(glfw_window, size.x * pointSize, size.y * pointSize);
 		}
 
-		inline void GetWindowSize(vec2i& out) {
+		inline void GetWindowSize(vec2i& out) const {
 			glfwGetWindowSize(glfw_window, &out.x, &out.y);
 		}
 
@@ -173,7 +173,7 @@ namespace prp {
 			glfwSetWindowPos(glfw_window, pos.x, pos.y);
 		}
 		
-		inline void GetWindowPosition(vec2i& out) {
+		inline void GetWindowPosition(vec2i& out) const {
 			glfwGetWindowPos(glfw_window, &out.x, &out.y);
 		}
 
@@ -182,7 +182,7 @@ namespace prp {
 			glfwSetWindowTitle(glfw_window, title.c_str());
 		}
 
-		inline void GetWindowTitle(std::string& out) {
+		inline void GetWindowTitle(std::string& out) const {
 			out = title;
 		}
 
