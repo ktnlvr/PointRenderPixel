@@ -88,6 +88,9 @@ namespace prp {
 			
 			GLFWwindow*& window = instance.glfw_window;
 			glfwMakeContextCurrent(window);
+			glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+			glOrtho(0, instance.windowSize.x, instance.windowSize.y, 0, 0, 1);
 
 			instance.OnBeginCallback(instance);
 
@@ -187,10 +190,10 @@ namespace prp {
 
 #pragma region DRAWING
 public:
-	// Based on OpenGL coordinates: (-1, 1)
-	void DrawPoint(vec2f windowPos) {
-		glVertex3f(windowPos.x, windowPos.y, 0);
-	}
+		void DrawPoint(vec2i pos) {
+			// Still have to use float for 0.5 offset, IMO weird
+			glVertex3f((float)pos.x + 0.5, (float)pos.y + 0.5, 0);
+		} 
 
 #pragma endregion
 	};
