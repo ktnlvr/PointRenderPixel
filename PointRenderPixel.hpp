@@ -12,6 +12,9 @@
 
 // look at Renderer::Start
 #define JOIN_ON_START
+#ifndef POINT_SIZE
+#define POINT_SIZE 4
+#endif
 
 namespace prp {
 	struct vec2i { int x, y; };
@@ -25,7 +28,6 @@ namespace prp {
 
 		// WARNING, window is measured in points, not in plain pixels'
 		vec2i windowSize = { 256, 256 };
-		int pointSize = 1;
 		double deltaTime = 0;
 
 #pragma endregion
@@ -71,8 +73,8 @@ namespace prp {
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
 			instance.glfw_window = glfwCreateWindow(
-				instance.windowSize.x * instance.pointSize, 
-				instance.windowSize.y * instance.pointSize, 
+				instance.windowSize.x * POINT_SIZE, 
+				instance.windowSize.y * POINT_SIZE,
 				instance.title.c_str(), NULL, NULL);
 
 			// Probably will be replaced later, don't rely on it too much
@@ -94,7 +96,7 @@ namespace prp {
 			// Used for measuring deltaTime
 			double lastFrameTime = 0;
 			while (!glfwWindowShouldClose(window)) {
-				glPointSize(instance.pointSize);
+				glPointSize(POINT_SIZE);
 				// Calculate deltaTime
 				double currentFrame = glfwGetTime();
 				instance.deltaTime = currentFrame - lastFrameTime;
@@ -126,11 +128,10 @@ namespace prp {
 
 #pragma region METHODS
 		// Set default data for a console window
-		void Construct(const char* title, vec2i position, vec2i size, int pointSize) {
+		void Construct(const char* title, vec2i position, vec2i size) {
 			this->title = title;
 			this->windowSize = size;
 			this->initialScreenPosition = position;
-			this->pointSize = pointSize;
 		}
 
 		// Start the engine thread! Yaaay!
@@ -163,7 +164,7 @@ namespace prp {
 #pragma region WINDOWING 
 		inline void SetWindowSize(vec2i size) {
 			windowSize = size;
-			glfwSetWindowSize(glfw_window, size.x * pointSize, size.y * pointSize);
+			glfwSetWindowSize(glfw_window, size.x * POINT_SIZE, size.y * POINT_SIZE);
 		}
 
 		inline void GetWindowSize(vec2i& out) const {
