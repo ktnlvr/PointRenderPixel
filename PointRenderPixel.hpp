@@ -92,11 +92,17 @@ namespace prp {
 			glLoadIdentity();
 			glOrtho(0, instance.windowSize.x, instance.windowSize.y, 0, 0, 1);
 
+			glfwSetCursorPosCallback(window, [](GLFWwindow* window, double xpos, double ypos) {
+				Renderer::GetInstance().cursorPosition = { (int)xpos / POINT_SIZE, (int)ypos / POINT_SIZE};
+				});
+
 			instance.OnBeginCallback(instance);
 
 			// Used for measuring deltaTime
 			double lastFrameTime = 0;
 			while (!glfwWindowShouldClose(window)) {
+				
+
 				glPointSize(POINT_SIZE);
 				// Calculate deltaTime
 				double currentFrame = glfwGetTime();
@@ -196,6 +202,12 @@ public:
 		} 
 
 #pragma endregion
+
+#pragma region INPUT
+public:
+	vec2i cursorPosition = { 0, 0 };
+
+#pragma endregion 
 	};
 	// Applied everyone, consider using it when storing Renderer 
 	typedef Renderer& RendererReference;
