@@ -21,6 +21,7 @@ namespace prp {
 	private:
 		std::string title = "PointRenderPixel";
 		vec2i initialScreenPosition{ 33, 33 };
+
 		// WARNING, window is measured in points, not in plain pixels'
 		vec2i windowSize = { 256, 256 };
 		int pointSize = 1;
@@ -64,11 +65,16 @@ namespace prp {
 	public:
 		static void TheThread() {
 			auto& instance = Renderer::GetInstance();
-
+			// Does something important
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-			instance.glfw_window = glfwCreateWindow(instance.windowSize.x * instance.pointSize, instance.windowSize.y * instance.pointSize, instance.title.c_str(), NULL, NULL);
 
+			instance.glfw_window = glfwCreateWindow(
+				instance.windowSize.x * instance.pointSize, 
+				instance.windowSize.y * instance.pointSize, 
+				instance.title.c_str(), NULL, NULL);
+
+			// Probably will be replaced later, don't rely on it too much
 			if (!instance.glfw_window)
 				throw std::exception("Invalid window, created");
 
@@ -94,10 +100,14 @@ namespace prp {
 				lastFrameTime = currentFrame;
 
 				instance.OnTickCallback(instance);
+
+				// Yes, all drawing is done as pixels
+				// Yes, it is fine
 				glBegin(GL_POINTS);
 				instance.OnRenderCallback(instance);
 				glEnd();
-				// do GLFW stuff
+
+				// do GLFW stuff, read more on their docs
 				glfwSwapBuffers(window);
 				glfwPollEvents();
 
@@ -114,6 +124,7 @@ namespace prp {
 #pragma endregion
 
 #pragma region METHODS
+		// Set default data for a console window
 		void Construct(const char* title, vec2i position, vec2i size, int pointSize) {
 			this->title = title;
 			this->windowSize = size;
@@ -121,7 +132,7 @@ namespace prp {
 			this->pointSize = pointSize;
 		}
 
-
+		// Start the engine thread! Yaaay!
 		void Start() {
 			isRunning = true;
 			lock.notify_all();
@@ -135,10 +146,15 @@ namespace prp {
 
 #pragma region CALLBACKS
 	public:
+		// Default Tick for running all the calculations
 		void(*OnTickCallback)(Renderer& self) = [](Renderer& self) {};
+		// After all other Ticks have fired
 		void(*OnTickLateCallback)(Renderer& self) = [](Renderer& self) {};
+		// All your drawing code goes here
 		void(*OnRenderCallback)(Renderer& self) = [](Renderer& self) {};
+		// Runs when the engine just starts
 		void(*OnBeginCallback)(Renderer& self) = [](Renderer& self) {};
+		// 
 		void(*OnFinishCallback)(Renderer& self) = [](Renderer& self) {};
 
 #pragma endregion
@@ -172,6 +188,7 @@ namespace prp {
 
 #pragma endregion
 	};
+	// Applied everyone, consider using it when storing Renderer 
 	typedef Renderer& RendererReference;
 	inline auto GetRendererInstance() noexcept -> Renderer& { return Renderer::GetInstance(); }
 }
