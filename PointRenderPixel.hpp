@@ -33,6 +33,8 @@ namespace prp {
 #pragma region GLFW PROPERTIES
 	public:
 		GLFWwindow* glfw_window = nullptr;
+		unsigned int glfw_frames = 0;
+		unsigned int glfw_FPS = 0;
 
 #pragma endregion
 
@@ -100,12 +102,24 @@ namespace prp {
 
 			// Used for measuring deltaTime
 			double lastFrameTime = 0;
+			double framesTimer = 0;
+
 			while (!glfwWindowShouldClose(window)) {
 				glPointSize(POINT_SIZE);
 				// Calculate deltaTime
 				double currentFrame = glfwGetTime();
 				instance.deltaTime = currentFrame - lastFrameTime;
 				lastFrameTime = currentFrame;
+
+				// Display fps
+				instance.glfw_frames++;
+				framesTimer += instance.deltaTime;
+
+				if (framesTimer >= 1.0) {
+					instance.glfw_FPS = instance.glfw_frames;
+					instance.glfw_frames = 0;
+					framesTimer = 0;
+				}
 
 
 				// Yes, all drawing is done as pixels
@@ -188,6 +202,10 @@ namespace prp {
 
 		inline void GetWindowTitle(std::string& out) const {
 			out = title;
+		}
+
+		inline unsigned int FPS() const {
+			return glfw_FPS;
 		}
 
 #pragma endregion
