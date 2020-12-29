@@ -104,9 +104,12 @@ namespace prp {
 			// Used for measuring deltaTime
 			double lastFrameTime = 0;
 			double framesTimer = 0;
+			glPointSize(POINT_SIZE);
 
 			while (!glfwWindowShouldClose(window)) {
-				glPointSize(POINT_SIZE);
+				glfwWaitEvents();
+				glfwPollEvents();
+
 				// Calculate deltaTime
 				double currentFrame = glfwGetTime();
 				instance.deltaTime = currentFrame - lastFrameTime;
@@ -131,7 +134,6 @@ namespace prp {
 
 				// do GLFW stuff, read more on their docs
 				glFlush();
-				glfwPollEvents();
 
 				instance.OnTickLateCallback(instance);
 			}
