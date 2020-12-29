@@ -101,8 +101,6 @@ namespace prp {
 			// Used for measuring deltaTime
 			double lastFrameTime = 0;
 			while (!glfwWindowShouldClose(window)) {
-				
-
 				glPointSize(POINT_SIZE);
 				// Calculate deltaTime
 				double currentFrame = glfwGetTime();
@@ -200,6 +198,13 @@ public:
 			// Still have to use float for 0.5 offset, IMO weird
 			glVertex3f((float)pos.x + 0.5, (float)pos.y + 0.5, 0);
 		} 
+
+		// Clear everything, starts with draw just for consistency
+		inline void DrawClear() {
+			glEnd();
+			glClear(GL_COLOR_BUFFER_BIT);
+			glBegin(GL_POINTS);
+		}
 
 #pragma endregion
 
