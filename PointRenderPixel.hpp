@@ -71,6 +71,7 @@ namespace prp {
 			// Does something important
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+			glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_FALSE);
 
 			instance.glfw_window = glfwCreateWindow(
 				instance.windowSize.x * POINT_SIZE, 
@@ -129,7 +130,7 @@ namespace prp {
 				glEnd();
 
 				// do GLFW stuff, read more on their docs
-				glfwSwapBuffers(window);
+				glFlush();
 				glfwPollEvents();
 
 				instance.OnTickLateCallback(instance);
