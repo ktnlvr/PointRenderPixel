@@ -218,7 +218,7 @@ public:
 		void DrawPoint(vec2i pos) {
 			// Still have to use float for 0.5 offset, IMO weird
 			glVertex3f((float)pos.x + 0.5, (float)pos.y + 0.5, 0);
-		} 
+		}
 
 		// Clear everything, starts with draw just for consistency
 		inline void DrawClear() {
@@ -226,6 +226,21 @@ public:
 			glClear(GL_COLOR_BUFFER_BIT);
 			glBegin(GL_POINTS);
 		}
+
+		void DrawLine(vec2i, vec2i);
+		void DrawLine(vec2i, vec2i, vec2i...);
+		void DrawRect(vec2i, vec2i);
+		void DrawRectFill(vec2i, vec2i);
+		void DrawCircle(vec2i, int r);
+		void DrawCircleFill(vec2i, int r);
+		void DrawTri(vec2i, vec2i, vec2i);
+		void DrawTriFill(vec2i, vec2i, vec2i);
+		void DrawQuad(vec2i, vec2i, vec2i, vec2i);
+		void DrawQuadFill(vec2i, vec2i, vec2i, vec2i);
+		void DrawPolygon(vec2i...);
+		void DrawPolygonFilled(vec2i...);
+		void DrawPolygon(vec2i*, size_t);
+		void DrawPolygonFilled(vec2i*, size_t);
 
 #pragma endregion
 
