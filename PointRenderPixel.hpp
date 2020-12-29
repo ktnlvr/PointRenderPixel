@@ -5,6 +5,7 @@
 
 #include <mutex>
 #include <thread>
+#include <functional>
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "opengl32.lib")
@@ -170,13 +171,13 @@ namespace prp {
 #pragma region CALLBACKS
 	public:
 		// Default Tick for running all the calculations
-		void(*OnTickCallback)(Renderer& self) = [](Renderer& self) {};
+		std::function<void(Renderer&)> OnTickCallback = [](Renderer& self) {};
 		// After all other Ticks have fired
-		void(*OnTickLateCallback)(Renderer& self) = [](Renderer& self) {};
+		std::function<void(Renderer&)> OnTickLateCallback = [](Renderer& self) {};
 		// Runs when the engine just starts
-		void(*OnBeginCallback)(Renderer& self) = [](Renderer& self) {};
+		std::function<void(Renderer&)> OnBeginCallback = [](Renderer& self) {};
 		// Called when the main loop is done, but before window destruction
-		void(*OnFinishCallback)(Renderer& self) = [](Renderer& self) {};
+		std::function<void(Renderer&)> OnFinishCallback = [](Renderer& self) {};
 
 #pragma endregion
 
