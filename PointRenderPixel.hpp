@@ -258,7 +258,17 @@ public:
 		}
 
 		void DrawLine(vec2i, vec2i, vec2i...);
-		void DrawRect(vec2i, vec2i);
+
+		void DrawRect(vec2i topleft, vec2i size) {
+			vec2i topright = { topleft.x + size.x, topleft.y };
+			vec2i bottomright = { topleft.x + size.x, topleft.y + size.y };
+			vec2i bottomleft = { topleft.x, topleft.y + size.y };
+			DrawLine(topleft, topright);
+			DrawLine(topright, bottomright);
+			DrawLine(bottomright, bottomleft);
+			DrawLine(bottomleft, topleft);
+		}
+
 		void DrawRectFill(vec2i, vec2i);
 		void DrawCircle(vec2i, int r);
 		void DrawCircleFill(vec2i, int r);
