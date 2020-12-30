@@ -257,7 +257,20 @@ public:
 			}
 		}
 
-		void DrawLine(vec2i, vec2i, vec2i...);
+		void DrawLine(vec2i* positions, size_t len) {
+			if (len == 0) return;
+			else if (len == 1) DrawLine(positions[0], positions[0]);
+			else {
+				vec2i start = positions[0];
+				vec2i next;
+				for (int i = 1; i < len; i++) {
+					next = positions[i];
+					DrawLine(start, next);
+					start = next;
+				}
+				DrawLine(start, positions[len - 1]);
+			}
+		}
 
 		void DrawRect(vec2i topleft, vec2i size) {
 			vec2i topright = { topleft.x + size.x, topleft.y };
