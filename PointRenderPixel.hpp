@@ -269,7 +269,16 @@ public:
 			DrawLine(bottomleft, topleft);
 		}
 
-		void DrawRectFill(vec2i, vec2i);
+		// Fill rectangle on the screen
+		void DrawRectFill(vec2i topleft, vec2i size) {
+			vec2i s = { size.x / abs(size.x), size.y / abs(size.y) };
+			for (int i = 0; abs(i) < size.x; i += s.x) {
+				for (int j = 0; abs(j) < size.y; j += s.y) {
+					DrawPoint({ i, j });
+				}
+			}
+		}
+
 		void DrawCircle(vec2i, int r);
 		void DrawCircleFill(vec2i, int r);
 		void DrawTri(vec2i, vec2i, vec2i);
