@@ -311,7 +311,7 @@ public:
 
 #pragma endregion 
 	};
-	// Applied everyone, consider using it when storing Renderer 
+	// Applied everywhere, consider using it when storing Renderer 
 	typedef Renderer& RendererReference;
 	inline auto GetRendererInstance() noexcept -> Renderer& { return Renderer::GetInstance(); }
 }
