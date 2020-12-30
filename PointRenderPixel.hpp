@@ -230,6 +230,9 @@ public:
 
 		// Draw line with Bresenham's algorithm
 		void DrawLine(vec2i pos0, vec2i pos1) {
+			// Edgecase for pos0 == pos1
+			DrawPoint(pos0);
+
 			int x0 = pos0.x,
 				y0 = pos0.y,
 				x1 = pos1.x,
