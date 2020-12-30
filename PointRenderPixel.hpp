@@ -228,7 +228,35 @@ public:
 			glBegin(GL_POINTS);
 		}
 
-		void DrawLine(vec2i, vec2i);
+		// Draw line with Bresenham's algorithm
+		void DrawLine(vec2i pos0, vec2i pos1) {
+			int x0 = pos0.x,
+				y0 = pos0.y,
+				x1 = pos1.x,
+				y1 = pos1.y;
+
+			int dx = abs(x1 - x0),
+				dy = -abs(y1 - y0);
+
+			int sx = x0 < x1 ? 1 : -1;
+			int sy = y0 < y1 ? 1 : -1;
+
+			int err = dx + dy;
+
+			while (!(x0 == x1 && y0 == y1)) {
+				DrawPoint({ x0, y0 });
+				int e2 = 2 * err;
+				if (e2 >= dy) {
+					err += dy;
+					x0 += sx;
+				} 
+				if (e2 <= dx) {
+					err += dx;
+					y0 += sy;
+				}
+			}
+		}
+
 		void DrawLine(vec2i, vec2i, vec2i...);
 		void DrawRect(vec2i, vec2i);
 		void DrawRectFill(vec2i, vec2i);
