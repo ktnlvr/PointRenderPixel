@@ -12,6 +12,7 @@ C++ Pixel Rendering Event-based Engine, for any graphical representations you ca
 ```cpp
 #define JOIN_ON_START // if defined, Renderer will run in the thread this method was called on, otherwise - in parallel
 #define POINT_SIZE n  // set a fitting point size, it's like a pixel, but size of n
+#define PRIME_RENDERER // call glfwInit() and glfwTerminate() automatically
 ```
 5. Look up an example program available: 
 

@@ -1,8 +1,5 @@
 #pragma once
 
-#define PRIME_RENDERER [](){ return glfwInit(); }
-#define TERMINATE_RENDERER []() { return glfwTerminate(); }
-
 #include <mutex>
 #include <thread>
 #include <functional>
@@ -69,6 +66,11 @@ namespace prp {
 	public:
 		static void TheThread() {
 			auto& instance = Renderer::GetInstance();
+
+#ifdef PRIME_RENDERER
+			glfwInit();
+#endif
+
 			// Does something important
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
 			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
@@ -140,6 +142,10 @@ namespace prp {
 			}
 			instance.OnFinishCallback(instance);
 			glfwDestroyWindow(window);
+
+#ifdef PRIME_RENDERER
+			glfwTerminate();
+#endif 
 		}
 
 		std::mutex mtx;
