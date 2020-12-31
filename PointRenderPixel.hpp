@@ -3,6 +3,7 @@
 #include <mutex>
 #include <thread>
 #include <functional>
+#include <vector>
 
 #pragma comment(lib, "glfw3.lib")
 #pragma comment(lib, "opengl32.lib")
@@ -15,6 +16,7 @@
 namespace prp {
 	struct vec2i { int x, y; };
 	struct vec2f { float x, y; };
+	struct color { float r, g, b, a; };
 
 	class Renderer {
 #pragma region PROPERTIES
@@ -46,6 +48,8 @@ namespace prp {
 	protected:
 		Renderer() {
 			theThread = std::thread(TheThread);
+			colors = std::vector<color>();
+			colors.reserve(4);
 		}
 
 #pragma endregion
@@ -133,6 +137,7 @@ namespace prp {
 				// Yes, it is fine
 				glBegin(GL_POINTS);
 				instance.OnTickCallback(instance);
+				instance.colors.clear();
 				glEnd();
 
 				// do GLFW stuff, read more on their docs
@@ -311,6 +316,31 @@ public:
 		void DrawPolygonFilled(vec2i...);
 		void DrawPolygon(vec2i*, size_t);
 		void DrawPolygonFilled(vec2i*, size_t);
+
+		void PushColor(color color) {
+			colors.push_back(color);
+			SetColor();
+		}
+
+		void PopColor() {
+			colors.pop_back();
+			color color = TopColor();
+			SetColor();
+		}
+
+		void SetColor() {
+			color c = TopColor();
+			SetColor(c);
+		}
+
+		void SetColor(color c) {
+			glColor4f(c.r, c.g, c.b, c.a);
+		}
+
+		auto TopColor() -> color& { return colors.back(); };
+
+	protected:
+		std::vector<color> colors;
 
 #pragma endregion
 
