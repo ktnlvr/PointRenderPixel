@@ -26,7 +26,10 @@ namespace prp {
 
 		// WARNING, window is measured in points, not in plain pixels'
 		vec2i windowSize = { 256, 256 };
+
+	public:
 		double deltaTime = 0;
+		double deltaTimeFixed = 0;
 
 #pragma endregion
 
@@ -111,6 +114,7 @@ namespace prp {
 			// Used for measuring deltaTime
 			double lastFrameTime = 0;
 			double framesTimer = 0;
+			double fixedDeltaTimer = 0;
 			glPointSize(POINT_SIZE);
 
 			while (!glfwWindowShouldClose(window)) {
@@ -122,7 +126,14 @@ namespace prp {
 				instance.deltaTime = currentFrame - lastFrameTime;
 				lastFrameTime = currentFrame;
 
-				// Display fps
+				// Fixed delta also here
+				fixedDeltaTimer += instance.deltaTime;
+				if (fixedDeltaTimer >= instance.deltaTimeFixed) {
+					instance.OnTickFixedCallback(instance);
+					fixedDeltaTimer = 0;
+				}
+
+				// Store FPS
 				instance.glfw_frames++;
 				framesTimer += instance.deltaTime;
 
@@ -131,7 +142,6 @@ namespace prp {
 					instance.glfw_frames = 0;
 					framesTimer = 0;
 				}
-
 
 				// Yes, all drawing is done as pixels
 				// Yes, it is fine
@@ -157,6 +167,7 @@ namespace prp {
 		std::condition_variable lock;
 		std::atomic_bool isRunning;
 		std::thread theThread;
+
 #pragma endregion
 
 #pragma region METHODS
@@ -183,10 +194,16 @@ namespace prp {
 	public:
 		// Default Tick for running all the calculations
 		std::function<void(Renderer&)> OnTickCallback = [](Renderer& self) {};
+
 		// After all other Ticks have fired
 		std::function<void(Renderer&)> OnTickLateCallback = [](Renderer& self) {};
+
+		// Activated every ::deltaTimeFixed seconds
+		std::function<void(Renderer&)> OnTickFixedCallback = [](Renderer& self) {};
+
 		// Runs when the engine just starts
 		std::function<void(Renderer&)> OnBeginCallback = [](Renderer& self) {};
+
 		// Called when the main loop is done, but before window destruction
 		std::function<void(Renderer&)> OnFinishCallback = [](Renderer& self) {};
 
