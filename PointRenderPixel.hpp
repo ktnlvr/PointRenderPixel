@@ -118,7 +118,6 @@ namespace prp {
 			glPointSize(POINT_SIZE);
 
 			while (!glfwWindowShouldClose(window)) {
-				glfwWaitEvents();
 				glfwPollEvents();
 
 				// Calculate deltaTime
