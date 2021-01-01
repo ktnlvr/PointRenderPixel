@@ -30,6 +30,7 @@ namespace prp {
 	public:
 		double deltaTime = 0;
 		double deltaTimeFixed = 0;
+		double timestep = 0.01;
 
 #pragma endregion
 
@@ -118,6 +119,8 @@ namespace prp {
 			glPointSize(POINT_SIZE);
 
 			while (!glfwWindowShouldClose(window)) {
+				// Choose min of two
+				glfwWaitEventsTimeout(instance.timestep > instance.deltaTimeFixed ? instance.deltaTimeFixed : instance.timestep);
 				glfwPollEvents();
 
 				// Calculate deltaTime
