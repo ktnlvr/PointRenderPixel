@@ -37,8 +37,13 @@ namespace prp {
 #pragma region GLFW PROPERTIES
 	public:
 		GLFWwindow* glfw_window = nullptr;
+			 
 		unsigned int glfw_frames = 0;
 		unsigned int glfw_FPS = 0;
+
+		void glfw_SetErrorCallback(GLFWerrorfun f) {
+			glfwSetErrorCallback(f);
+		}
 
 #pragma endregion
 
@@ -174,10 +179,13 @@ namespace prp {
 
 #pragma region METHODS
 		// Set default data for a console window
-		void Construct(const char* title, vec2i position, vec2i size) {
+		void Construct(const char* title, vec2i position, vec2i size, GLFWerrorfun errCallback = [](int code, const char* msg) {
+			throw std::exception(msg, code);
+			}) {
 			this->title = title;
 			this->windowSize = size;
 			this->initialScreenPosition = position;
+			this->glfw_SetErrorCallback(errCallback);
 		}
 
 		// Start the engine thread! Yaaay!
